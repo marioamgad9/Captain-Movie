@@ -2,6 +2,10 @@ package com.mouris.mario.captainmovie;
 
 import android.util.Log;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,10 +20,12 @@ public class QueryUtils {
     private static final String BASE_URL = "https://api.themoviedb.org/3/movie/";
     private static final String API_KEY_QUERY = "?api_key=834352e8708bf5fb62e4147667d02fc0";
 
+    private static final String POSTER_BASE_URL = "http://image.tmdb.org/t/p/w185/";
+
     private QueryUtils() {
     }
 
-    public static String fetchMovie(int movieId) {
+    public static Movie fetchMovie(int movieId) {
         String request_url = BASE_URL + movieId + API_KEY_QUERY;
 
         URL url = createUrl(request_url);
@@ -31,7 +37,7 @@ public class QueryUtils {
             Log.e(LOG_TAG, "Problem making the HTTP request.", e);
         }
 
-        return jsonResponse;
+        return extractMovieFromJson(jsonResponse);
     }
 
     private static URL createUrl(String stringUrl) {
@@ -91,5 +97,29 @@ public class QueryUtils {
         }
 
         return output.toString();
+    }
+
+    private static Movie extractMovieFromJson(String movieJson) {
+        Movie movie = new Movie();
+        try {
+            JSONObject movieJsonObject = new JSONObject(movieJson);
+            movie.homepage = movieJsonObject.getString("homepage");
+            movie.title = movieJsonObject.getString("title");
+            movie.overview = movieJsonObject.getString("overview");
+            movie.release_date = movieJsonObject.getString("release_date");
+            movie.vote_average = movieJsonObject.getDouble("vote_average");
+            movie.poster_path = POSTER_BASE_URL + movieJsonObject.getString("poster_path");
+
+            JSONArray genresJsonArray = movieJsonObject.getJSONArray("genres");
+            for (int i=0 ; i < genresJsonArray.length(); i++) {
+                JSONObject genreJsonObject = genresJsonArray.getJSONObject(i);
+                movie.genres.add(genreJsonObject.getString("name"));
+            }
+
+        } catch (JSONException e) {
+            Log.e(LOG_TAG, "There was an error in extractMovieFromJson", e);
+        }
+
+        return movie;
     }
 }
