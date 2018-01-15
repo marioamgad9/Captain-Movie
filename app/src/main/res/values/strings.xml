@@ -3,5 +3,6 @@
 
     <!--MainActivity strings-->
     <string name="ask_captain">Ask the Captain what to watch!!</string>
+    <string name="go_back_to_captain">Go back to the Captain</string>
 
 </resources>
