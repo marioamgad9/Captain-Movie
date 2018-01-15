@@ -1,6 +1,8 @@
-package com.mouris.mario.captainmovie;
+package com.mouris.mario.captainmovie.Utils;
 
 import android.util.Log;
+
+import com.mouris.mario.captainmovie.Data.Movie;
 
 import org.json.JSONArray;
 import org.json.JSONException;
