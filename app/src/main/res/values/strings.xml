@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Captain Movie</string>
+
+    <!--MainActivity strings-->
+    <string name="ask_captain">Ask the Captain what to watch!!</string>
+
 </resources>
