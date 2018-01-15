@@ -3,12 +3,19 @@ package com.mouris.mario.captainmovie.UI;
 import android.arch.lifecycle.ViewModelProviders;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.ImageView;
 
 import com.mouris.mario.captainmovie.R;
 
 public class MainActivity extends AppCompatActivity {
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
+
+    private Button mAskCaptainButton;
+    private ImageView mCaptainImageView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,13 +23,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         MainViewModel viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
-        viewModel.getRandomMovie().observe(this, movie -> {
-            if (movie != null) {
-                Log.i(LOG_TAG, movie.title);
-                Log.i(LOG_TAG, movie.poster_path);
-                Log.i(LOG_TAG, movie.homepage);
-            }
-        });
 
     }
 }
