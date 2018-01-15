@@ -19,6 +19,8 @@ import java.net.URL;
 public class QueryUtils {
     private static final String LOG_TAG = QueryUtils.class.getSimpleName();
 
+    private static final int FINAL_MOVIE_ID = 498000;
+
     private static final String BASE_URL = "https://api.themoviedb.org/3/movie/";
     private static final String API_KEY_QUERY = "?api_key=834352e8708bf5fb62e4147667d02fc0";
 
@@ -28,6 +30,22 @@ public class QueryUtils {
     }
 
     public static Movie fetchMovie(int movieId) {
+        String request_url = BASE_URL + movieId + API_KEY_QUERY;
+
+        URL url = createUrl(request_url);
+
+        String jsonResponse = null;
+        try {
+            jsonResponse = makeHttpRequest(url);
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "Problem making the HTTP request.", e);
+        }
+
+        return extractMovieFromJson(jsonResponse);
+    }
+
+    public static Movie fetchRandomMovie() {
+        int movieId = getRandomMovieId();
         String request_url = BASE_URL + movieId + API_KEY_QUERY;
 
         URL url = createUrl(request_url);
@@ -71,7 +89,7 @@ public class QueryUtils {
                 inputStream = urlConnection.getInputStream();
                 jsonResponse = readFromStream(inputStream);
             } else {
-                Log.e(LOG_TAG, "Error response code" + response_code);
+                Log.e(LOG_TAG, "Error response code " + response_code);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -102,6 +120,8 @@ public class QueryUtils {
     }
 
     private static Movie extractMovieFromJson(String movieJson) {
+        if (movieJson.isEmpty()) return null;
+
         Movie movie = new Movie();
         try {
             JSONObject movieJsonObject = new JSONObject(movieJson);
@@ -111,6 +131,7 @@ public class QueryUtils {
             movie.release_date = movieJsonObject.getString("release_date");
             movie.vote_average = movieJsonObject.getDouble("vote_average");
             movie.poster_path = POSTER_BASE_URL + movieJsonObject.getString("poster_path");
+            movie.adult = movieJsonObject.getBoolean("adult");
 
             JSONArray genresJsonArray = movieJsonObject.getJSONArray("genres");
             for (int i=0 ; i < genresJsonArray.length(); i++) {
@@ -123,5 +144,9 @@ public class QueryUtils {
         }
 
         return movie;
+    }
+
+    private static int getRandomMovieId() {
+        return (int) (Math.random() * FINAL_MOVIE_ID + 1);
     }
 }

@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         MainViewModel viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
-        viewModel.getMovie(12).observe(this, movie -> {
+        viewModel.getRandomMovie().observe(this, movie -> {
             if (movie != null) {
                 Log.i(LOG_TAG, movie.title);
                 Log.i(LOG_TAG, movie.poster_path);

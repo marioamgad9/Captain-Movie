@@ -26,16 +26,41 @@ public class RemoteDataSource {
     }
 
     public LiveData<Movie> getMovieById(int movieId) {
-        loadMovie(movieId);
+        loadMovieById(movieId);
+        return mMovieLiveData;
+    }
+
+    public LiveData<Movie> getRandomMovie() {
+        loadRandomMovie();
         return mMovieLiveData;
     }
 
     @SuppressLint("StaticFieldLeak")
-    private void loadMovie(final int movieId) {
+    private void loadMovieById(final int movieId) {
         new AsyncTask<Void, Void, Movie>() {
             @Override
             protected Movie doInBackground(Void... voids) {
                 return QueryUtils.fetchMovie(movieId);
+            }
+
+            @Override
+            protected void onPostExecute(Movie movie) {
+                mMovieLiveData.setValue(movie);
+            }
+        }.execute();
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void loadRandomMovie() {
+        new AsyncTask<Void, Void, Movie>() {
+            @Override
+            protected Movie doInBackground(Void... voids) {
+                Movie randomMovie;
+                do {
+                    randomMovie = QueryUtils.fetchRandomMovie();
+                } while (randomMovie == null);
+
+                return randomMovie;
             }
 
             @Override

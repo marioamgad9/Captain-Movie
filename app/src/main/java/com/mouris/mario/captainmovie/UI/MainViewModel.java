@@ -14,8 +14,8 @@ public class MainViewModel extends ViewModel {
         mRemoteDataSource = RemoteDataSource.getInstance();
     }
 
-    LiveData<Movie> getMovie(int movieId) {
-        return mRemoteDataSource.getMovieById(movieId);
+    LiveData<Movie> getRandomMovie() {
+        return mRemoteDataSource.getRandomMovie();
     }
 
 }

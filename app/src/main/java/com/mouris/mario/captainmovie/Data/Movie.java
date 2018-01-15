@@ -11,6 +11,7 @@ public class Movie {
     public String overview;
     public String release_date;
     public String poster_path;
+    public boolean adult;
     public List<String > genres;
 
     public Movie() {
