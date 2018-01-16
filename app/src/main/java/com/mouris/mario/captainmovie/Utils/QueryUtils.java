@@ -139,7 +139,7 @@ public class QueryUtils {
             for (int i=0 ; i < genresJsonArray.length(); i++) {
                 JSONObject genreJsonObject = genresJsonArray.getJSONObject(i);
                 genresStringBuilder.append(genreJsonObject.getString("name"));
-                if (i != 0 && i != genresJsonArray.length()-1) {
+                if (genresJsonArray.length() > 1 && i != genresJsonArray.length()-1) {
                     genresStringBuilder.append(", ");
                 }
             }
