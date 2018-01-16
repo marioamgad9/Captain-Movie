@@ -14,6 +14,7 @@ import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.mouris.mario.captainmovie.Data.Movie;
@@ -50,14 +51,12 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //To update the loading state
-        ImageView thinkingImageView = findViewById(R.id.thinkingImageView);
+        ProgressBar progressBar = findViewById(R.id.progressBar);
         viewModel.isLoading().observe(this, isLoading -> {
             if (isLoading) {
-                animateBlinking(thinkingImageView);
-                thinkingImageView.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.VISIBLE);
             } else {
-                thinkingImageView.setVisibility(View.GONE);
-                stopBlinking(thinkingImageView);
+                progressBar.setVisibility(View.GONE);
             }
         });
 
@@ -77,19 +76,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-    }
-
-    private void animateBlinking(ImageView imageView) {
-        Animation animation = new AlphaAnimation(0, 1);
-        animation.setDuration(1000);
-        animation.setInterpolator(new LinearInterpolator());
-        animation.setRepeatCount(Animation.INFINITE);
-        animation.setRepeatMode(Animation.REVERSE);
-        imageView.startAnimation(animation);
-    }
-
-    private void stopBlinking(ImageView imageView) {
-        imageView.clearAnimation();
     }
 
     private void bindDataToMovieLayout(Movie movie) {
