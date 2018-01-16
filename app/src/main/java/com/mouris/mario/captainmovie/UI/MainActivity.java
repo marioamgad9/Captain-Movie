@@ -6,6 +6,9 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -48,12 +51,14 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //To update the loading state
-        ProgressBar progressBar = findViewById(R.id.progressBar);
+        ImageView thinkingImageView = findViewById(R.id.thinkingImageView);
         viewModel.isLoading().observe(this, isLoading -> {
             if (isLoading) {
-                progressBar.setVisibility(View.VISIBLE);
+                animateBlinking(thinkingImageView);
+                thinkingImageView.setVisibility(View.VISIBLE);
             } else {
-                progressBar.setVisibility(View.GONE);
+                stopBlinking(thinkingImageView);
+                thinkingImageView.setVisibility(View.GONE);
             }
         });
 
@@ -73,6 +78,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void animateBlinking(ImageView imageView) {
+        Animation animation = new AlphaAnimation(0, 1);
+        animation.setDuration(1000);
+        animation.setInterpolator(new LinearInterpolator());
+        animation.setRepeatCount(Animation.INFINITE);
+        animation.setRepeatMode(Animation.REVERSE);
+        imageView.startAnimation(animation);
+    }
+
+    private void stopBlinking(ImageView imageView) {
+        imageView.clearAnimation();
     }
 
     private void bindDataToMovieLayout(Movie movie) {
