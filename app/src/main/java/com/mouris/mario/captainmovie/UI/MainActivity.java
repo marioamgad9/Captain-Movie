@@ -1,6 +1,7 @@
 package com.mouris.mario.captainmovie.UI;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -13,7 +14,6 @@ import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.mouris.mario.captainmovie.Data.Movie;
@@ -25,9 +25,7 @@ public class MainActivity extends AppCompatActivity {
 //    private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
     private static final int ANIMATION_DURATION = 600;
-    private static final int SHORT_ANIMATION_DURATION = 300;
 
-    private Button mAskCaptainButton;
     private ImageView mSkyImageView;
     private ConstraintLayout mCaptainLayout;
     private LinearLayout mMovieLayout;
@@ -58,16 +56,16 @@ public class MainActivity extends AppCompatActivity {
                 animateBlinking(thinkingImageView);
                 thinkingImageView.setVisibility(View.VISIBLE);
             } else {
-                stopBlinking(thinkingImageView);
                 thinkingImageView.setVisibility(View.GONE);
+                stopBlinking(thinkingImageView);
             }
         });
 
-        mAskCaptainButton = findViewById(R.id.askCaptainButton);
         mCaptainLayout = findViewById(R.id.captainLayout);
         mMovieLayout = findViewById(R.id.movieLayout);
         mSkyImageView = findViewById(R.id.sky);
         FloatingActionButton cancelFab = findViewById(R.id.cancelFAB);
+        Button mAskCaptainButton = findViewById(R.id.askCaptainButton);
 
         cancelFab.setOnClickListener(v-> viewModel.removeCurrentMovie());
         mAskCaptainButton.setOnClickListener(v-> {
@@ -99,44 +97,46 @@ public class MainActivity extends AppCompatActivity {
         TextView genresTV = findViewById(R.id.generesTextView);
         TextView overviewTV = findViewById(R.id.overviewTextView);
         TextView rateTV = findViewById(R.id.rateTextView);
-        ImageView movieImageView = findViewById(R.id.posterImageView);
+        ImageView posterImageView = findViewById(R.id.posterImageView);
 
-        titleTV.setText(movie.title);
-        overviewTV.setText(movie.overview);
+        new Handler().postDelayed(()-> {
+            titleTV.setText(movie.title);
+            overviewTV.setText(movie.overview);
 
-        String rateString = String.format(getResources().getString(R.string.movie_vote_average),
-                String.valueOf((int) movie.vote_average));
-        rateTV.setText(rateString);
+            String rateString = String.format(getResources().getString(R.string.movie_vote_average),
+                    String.valueOf((int) movie.vote_average));
+            rateTV.setText(rateString);
 
-        String genresString = String.format(getResources().getString(R.string.movie_genres),
-                movie.genres);
-        genresTV.setText(genresString);
+            String genresString = String.format(getResources().getString(R.string.movie_genres),
+                    movie.genres);
+            genresTV.setText(genresString);
+        }, 100);
 
-        Picasso.with(this).load(movie.poster_path)
+        posterImageView.setImageResource(R.drawable.poster_placeholder);
+        new Handler().postDelayed(()-> Picasso.with(this).load(movie.poster_path)
                 .placeholder(R.drawable.poster_placeholder)
-                .into(movieImageView);
+                .into(posterImageView), 700);
     }
 
     private void goToCaptainMode() {
         //Show the captain layout
-        mCaptainLayout.animate().translationY(0).setDuration(ANIMATION_DURATION);
+        mCaptainLayout.animate().withLayer().translationY(0).setDuration(ANIMATION_DURATION);
         //Hide the movie layout
-        mMovieLayout.animate().translationY(-1550).setDuration(ANIMATION_DURATION)
-                .withEndAction(() -> mMovieLayout.setVisibility(View.GONE));
+        mMovieLayout.animate().withLayer().translationY(-1550).setDuration(ANIMATION_DURATION);
         //Zoom out of the sky
-        mSkyImageView.animate().scaleXBy(-0.8f)
+        mSkyImageView.animate().withLayer().scaleXBy(-0.8f)
                 .scaleYBy(-0.8f).setDuration(ANIMATION_DURATION);
     }
 
     private void goToMovieMode() {
         //Hide the captain layout
-        mCaptainLayout.animate().translationY(1250).setDuration(ANIMATION_DURATION);
+        mCaptainLayout.animate().withLayer().translationY(1250).setDuration(ANIMATION_DURATION);
         //Show the movie layout
         mMovieLayout.setTranslationY(-1550);
         mMovieLayout.setVisibility(View.VISIBLE);
-        mMovieLayout.animate().translationY(0).setDuration(ANIMATION_DURATION);
+        mMovieLayout.animate().withLayer().translationY(0).setDuration(ANIMATION_DURATION);
         //Zoom into the sky
-        mSkyImageView.animate().scaleXBy(0.8f)
+        mSkyImageView.animate().withLayer().scaleXBy(0.8f)
                 .scaleYBy(0.8f).setDuration(ANIMATION_DURATION);
     }
 }
