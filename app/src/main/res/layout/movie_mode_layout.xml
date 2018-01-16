@@ -14,7 +14,7 @@
         android:layout_height="0dp"
         android:layout_margin="20dp"
         android:layout_weight="14"
-        app:cardElevation="20dp">
+        app:cardCornerRadius="15dp">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -78,7 +78,7 @@
                 android:id="@+id/textView5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="20dp"
                 android:fontFamily="sans-serif-smallcaps"
                 android:text="@string/movie_overview"
@@ -86,19 +86,32 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/generesTextView" />
 
-            <TextView
-                android:id="@+id/overviewTextView"
+            <ScrollView
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:fontFamily="sans-serif-smallcaps"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textView5"
-                app:layout_constraintTop_toTopOf="@+id/textView5"
-                tools:text="@string/movie_overview_placeholder" />
+                app:layout_constraintTop_toTopOf="@+id/textView5">
+
+                <TextView
+                    android:id="@+id/overviewTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:fontFamily="sans-serif-smallcaps"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textView5"
+                    app:layout_constraintTop_toTopOf="@+id/textView5"
+                    tools:text="@string/movie_overview_placeholder" />
+            </ScrollView>
+
 
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>
@@ -110,5 +123,6 @@
         android:layout_gravity="center"
         android:layout_marginBottom="15dp"
         android:layout_weight="1"
-        android:src="@drawable/ic_cancel" />
+        android:src="@drawable/ic_cancel"
+        app:backgroundTint="@android:color/white" />
 </LinearLayout>

@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         overviewTV.setText(movie.overview);
 
         String rateString = String.format(getResources().getString(R.string.movie_vote_average),
-                String.valueOf(movie.vote_average));
+                String.valueOf((int) movie.vote_average));
         rateTV.setText(rateString);
 
         Picasso.with(this).load(movie.poster_path)
