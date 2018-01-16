@@ -1,13 +1,13 @@
 package com.mouris.mario.captainmovie.UI;
 
 import android.arch.lifecycle.ViewModelProviders;
-import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mouris.mario.captainmovie.R;
@@ -17,13 +17,14 @@ public class MainActivity extends AppCompatActivity {
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
     private static final int ANIMATION_DURATION = 600;
+    private static final int SHORT_ANIMATION_DURATION = 300;
 
     private boolean inCaptainMode = true;
 
     private Button mAskCaptainButton;
-    private Button mGoBackButton;
+    private FloatingActionButton mCancelFAB;
     private ImageView mCaptainImageView;
-    private ConstraintLayout mMovieConstraintLayout;
+    private LinearLayout mMovieLayout;
 
 
     @Override
@@ -34,19 +35,19 @@ public class MainActivity extends AppCompatActivity {
         MainViewModel viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         viewModel.getRandomMovie().observe(this, movie -> {
             if (movie != null) {
-                ((TextView) mMovieConstraintLayout.findViewById(R.id.titleTextView))
+                ((TextView) findViewById(R.id.titleTextView))
                         .setText(movie.title);
-                ImageView movieImageView = mMovieConstraintLayout.findViewById(R.id.posterImageView);
+                ImageView movieImageView = findViewById(R.id.posterImageView);
                 Picasso.with(this).load(movie.poster_path).into(movieImageView);
             }
         });
 
         mAskCaptainButton = findViewById(R.id.askCaptainButton);
         mCaptainImageView = findViewById(R.id.captain);
-        mMovieConstraintLayout = findViewById(R.id.movieLayout);
-        mGoBackButton = mMovieConstraintLayout.findViewById(R.id.goBackButton);
+        mMovieLayout = findViewById(R.id.movieLayout);
+        mCancelFAB = findViewById(R.id.cancelFAB);
 
-        mGoBackButton.setOnClickListener(v-> goToCaptainMode());
+        mCancelFAB.setOnClickListener(v-> goToCaptainMode());
 
         mAskCaptainButton.setOnClickListener(v-> goToMovieMode());
 
@@ -61,8 +62,8 @@ public class MainActivity extends AppCompatActivity {
         //Show the askCaptainButton
         mAskCaptainButton.animate().translationY(0).setDuration(ANIMATION_DURATION);
         //Hide the movie layout
-        mMovieConstraintLayout.animate().translationY(-1550).setDuration(ANIMATION_DURATION)
-                .withEndAction(() -> mMovieConstraintLayout.setVisibility(View.GONE));
+        mMovieLayout.animate().translationY(-1550).setDuration(ANIMATION_DURATION)
+                .withEndAction(() -> mMovieLayout.setVisibility(View.GONE));
     }
 
     private void goToMovieMode() {
@@ -71,10 +72,10 @@ public class MainActivity extends AppCompatActivity {
         mCaptainImageView.animate().translationY(1250).setDuration(ANIMATION_DURATION);
         mCaptainImageView.animate().alpha(0).setDuration(ANIMATION_DURATION);
         //Hide the askCaptainButton
-        mAskCaptainButton.animate().translationY(200).setDuration(ANIMATION_DURATION);
+        mAskCaptainButton.animate().translationY(200).setDuration(SHORT_ANIMATION_DURATION);
         //Show the movie layout
-        mMovieConstraintLayout.setTranslationY(-1550);
-        mMovieConstraintLayout.setVisibility(View.VISIBLE);
-        mMovieConstraintLayout.animate().translationY(0).setDuration(ANIMATION_DURATION);
+        mMovieLayout.setTranslationY(-1550);
+        mMovieLayout.setVisibility(View.VISIBLE);
+        mMovieLayout.animate().translationY(0).setDuration(ANIMATION_DURATION);
     }
 }
