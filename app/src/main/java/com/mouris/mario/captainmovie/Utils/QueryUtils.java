@@ -132,6 +132,7 @@ public class QueryUtils {
             movie.vote_average = movieJsonObject.getDouble("vote_average");
             movie.poster_path = POSTER_BASE_URL + movieJsonObject.getString("poster_path");
             movie.adult = movieJsonObject.getBoolean("adult");
+            movie.original_language = movieJsonObject.getString("original_language");
 
             JSONArray genresJsonArray = movieJsonObject.getJSONArray("genres");
             for (int i=0 ; i < genresJsonArray.length(); i++) {

@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.mouris.mario.captainmovie.Data.Movie;
 import com.mouris.mario.captainmovie.R;
 import com.squareup.picasso.Picasso;
 
@@ -19,10 +20,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int ANIMATION_DURATION = 600;
     private static final int SHORT_ANIMATION_DURATION = 300;
 
-    private boolean inCaptainMode = true;
-
     private Button mAskCaptainButton;
-    private FloatingActionButton mCancelFAB;
     private ImageView mCaptainImageView;
     private LinearLayout mMovieLayout;
 
@@ -35,26 +33,41 @@ public class MainActivity extends AppCompatActivity {
         MainViewModel viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         viewModel.getRandomMovie().observe(this, movie -> {
             if (movie != null) {
-                ((TextView) findViewById(R.id.titleTextView))
-                        .setText(movie.title);
-                ImageView movieImageView = findViewById(R.id.posterImageView);
-                Picasso.with(this).load(movie.poster_path).into(movieImageView);
+                bindDataToMovieLayout(movie);
             }
         });
 
         mAskCaptainButton = findViewById(R.id.askCaptainButton);
         mCaptainImageView = findViewById(R.id.captain);
         mMovieLayout = findViewById(R.id.movieLayout);
-        mCancelFAB = findViewById(R.id.cancelFAB);
 
-        mCancelFAB.setOnClickListener(v-> goToCaptainMode());
+        FloatingActionButton cancelFab = findViewById(R.id.cancelFAB);
+        cancelFab.setOnClickListener(v-> goToCaptainMode());
 
         mAskCaptainButton.setOnClickListener(v-> goToMovieMode());
 
     }
 
+    private void bindDataToMovieLayout(Movie movie) {
+        TextView titleTV = findViewById(R.id.titleTextView);
+        TextView generesTV = findViewById(R.id.generesTextView);
+        TextView overviewTV = findViewById(R.id.overviewTextView);
+        TextView rateTV = findViewById(R.id.rateTextView);
+        ImageView movieImageView = findViewById(R.id.posterImageView);
+
+        titleTV.setText(movie.title);
+        overviewTV.setText(movie.overview);
+
+        String rateString = String.format(getResources().getString(R.string.movie_vote_average),
+                String.valueOf(movie.vote_average));
+        rateTV.setText(rateString);
+
+        Picasso.with(this).load(movie.poster_path)
+                .placeholder(R.drawable.poster_placeholder)
+                .into(movieImageView);
+    }
+
     private void goToCaptainMode() {
-        inCaptainMode = true;
         //Show the captain
         mCaptainImageView.animate().translationY(0).setDuration(ANIMATION_DURATION);
         mCaptainImageView.animate().alpha(1).setDuration(ANIMATION_DURATION);
@@ -67,7 +80,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void goToMovieMode() {
-        inCaptainMode = false;
         //Hide the captain
         mCaptainImageView.animate().translationY(1250).setDuration(ANIMATION_DURATION);
         mCaptainImageView.animate().alpha(0).setDuration(ANIMATION_DURATION);

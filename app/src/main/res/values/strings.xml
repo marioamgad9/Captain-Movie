@@ -3,6 +3,13 @@
 
     <!--MainActivity strings-->
     <string name="ask_captain">Ask the Captain what to watch!!</string>
-    <string name="go_back_to_captain">Go back to the Captain</string>
+
+    <!--Movie layout strings-->
+    <string name="movie_title">Movie Title</string>
+    <string name="movie_release_date">2015–05–30</string>
+    <string name="movie_vote_average">Average Rate: %1$s/10</string>
+    <string name="movie_genres">Genres: %1$s</string>
+    <string name="movie_overview">Overview:</string>
+    <string name="movie_overview_placeholder">"Nemo, an adventurous young clownfish, is unexpectedly taken from his Great Barrier Reef home to a dentist's office aquarium. It's up to his worrisome father Marlin and a friendly but forgetful fish Dory to bring Nemo home — meeting vegetarian sharks, surfer dude turtles, hypnotic jellyfish, hungry seagulls, and more along the way."</string>
 
 </resources>

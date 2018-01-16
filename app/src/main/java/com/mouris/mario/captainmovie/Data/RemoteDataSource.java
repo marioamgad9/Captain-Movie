@@ -58,7 +58,9 @@ public class RemoteDataSource {
                 Movie randomMovie;
                 do {
                     randomMovie = QueryUtils.fetchRandomMovie();
-                } while (randomMovie == null);
+                } while (randomMovie == null
+                        || randomMovie.adult
+                        || !randomMovie.original_language.equals("en"));
 
                 return randomMovie;
             }
