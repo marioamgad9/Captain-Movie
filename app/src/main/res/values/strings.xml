@@ -10,6 +10,7 @@
     <string name="movie_vote_average">Average Rate: %1$s/10</string>
     <string name="movie_genres">Genres: %1$s</string>
     <string name="movie_overview">Overview:</string>
+    <string name="visit_link">Visit movie\'s home page</string>
     <string name="movie_overview_placeholder">"Nemo, an adventurous young clownfish, is unexpectedly taken from his Great Barrier Reef home to a dentist's office aquarium. It's up to his worrisome father Marlin and a friendly but forgetful fish Dory to bring Nemo home — meeting vegetarian sharks, surfer dude turtles, hypnotic jellyfish, hungry seagulls, and more along the way."</string>
     <string name="no_internet_message">The Captain needs a stable internet connection to think…</string>
 </resources>

@@ -1,6 +1,8 @@
 package com.mouris.mario.captainmovie.UI;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -86,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
         TextView overviewTV = findViewById(R.id.overviewTextView);
         TextView rateTV = findViewById(R.id.rateTextView);
         ImageView posterImageView = findViewById(R.id.posterImageView);
+        Button visitHomePageButton = findViewById(R.id.visitHomePageButton);
 
         new Handler().postDelayed(()-> {
             titleTV.setText(movie.title);
@@ -98,6 +101,16 @@ public class MainActivity extends AppCompatActivity {
             String genresString = String.format(getResources().getString(R.string.movie_genres),
                     movie.genres);
             genresTV.setText(genresString);
+
+            if (movie.homepage.isEmpty()) {
+                visitHomePageButton.setVisibility(View.GONE);
+            } else {
+                visitHomePageButton.setVisibility(View.VISIBLE);
+                visitHomePageButton.setOnClickListener(v->{
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(movie.homepage));
+                    startActivity(intent);
+                });
+            }
         }, 100);
 
         posterImageView.setImageResource(R.drawable.poster_placeholder);
