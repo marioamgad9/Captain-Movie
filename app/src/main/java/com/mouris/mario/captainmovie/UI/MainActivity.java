@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Button mAskCaptainButton;
     private ImageView mCaptainImageView;
+    private ImageView mSkyImageView;
     private LinearLayout mMovieLayout;
 
 
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         mAskCaptainButton = findViewById(R.id.askCaptainButton);
         mCaptainImageView = findViewById(R.id.captain);
         mMovieLayout = findViewById(R.id.movieLayout);
+        mSkyImageView = findViewById(R.id.sky);
 
         FloatingActionButton cancelFab = findViewById(R.id.cancelFAB);
         cancelFab.setOnClickListener(v-> goToCaptainMode());
@@ -81,6 +83,9 @@ public class MainActivity extends AppCompatActivity {
         //Hide the movie layout
         mMovieLayout.animate().translationY(-1550).setDuration(ANIMATION_DURATION)
                 .withEndAction(() -> mMovieLayout.setVisibility(View.GONE));
+        //Zoom out of the sky
+        mSkyImageView.animate().scaleXBy(-0.8f).setDuration(ANIMATION_DURATION);
+        mSkyImageView.animate().scaleYBy(-0.8f).setDuration(ANIMATION_DURATION);
     }
 
     private void goToMovieMode() {
@@ -93,5 +98,8 @@ public class MainActivity extends AppCompatActivity {
         mMovieLayout.setTranslationY(-1550);
         mMovieLayout.setVisibility(View.VISIBLE);
         mMovieLayout.animate().translationY(0).setDuration(ANIMATION_DURATION);
+        //Zoom into the sky
+        mSkyImageView.animate().scaleXBy(0.8f).setDuration(ANIMATION_DURATION);
+        mSkyImageView.animate().scaleYBy(0.8f).setDuration(ANIMATION_DURATION);
     }
 }
