@@ -18,4 +18,16 @@ public class MainViewModel extends ViewModel {
         return mRemoteDataSource.getRandomMovie();
     }
 
+    LiveData<Boolean> isLoading() {
+        return mRemoteDataSource.isLoading();
+    }
+
+    void loadRandomMovie() {
+        mRemoteDataSource.loadRandomMovie();
+    }
+
+    void removeCurrentMovie() {
+        mRemoteDataSource.removeCurrentMovie();
+    }
+
 }

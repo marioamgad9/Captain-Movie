@@ -12,9 +12,12 @@ public class RemoteDataSource {
     private static RemoteDataSource sInstance;
 
     private MutableLiveData<Movie> mMovieLiveData;
+    private MutableLiveData<Boolean> mIsLoading;
 
     private RemoteDataSource() {
         mMovieLiveData = new MutableLiveData<>();
+        mIsLoading = new MutableLiveData<>();
+        mIsLoading.setValue(false);
     }
 
     public static RemoteDataSource getInstance() {
@@ -25,33 +28,21 @@ public class RemoteDataSource {
         return sInstance;
     }
 
-    public LiveData<Movie> getMovieById(int movieId) {
-        loadMovieById(movieId);
-        return mMovieLiveData;
+    public void removeCurrentMovie() {
+        mMovieLiveData.setValue(null);
     }
 
     public LiveData<Movie> getRandomMovie() {
-        loadRandomMovie();
         return mMovieLiveData;
     }
 
-    @SuppressLint("StaticFieldLeak")
-    private void loadMovieById(final int movieId) {
-        new AsyncTask<Void, Void, Movie>() {
-            @Override
-            protected Movie doInBackground(Void... voids) {
-                return QueryUtils.fetchMovie(movieId);
-            }
-
-            @Override
-            protected void onPostExecute(Movie movie) {
-                mMovieLiveData.setValue(movie);
-            }
-        }.execute();
+    public LiveData<Boolean> isLoading() {
+        return mIsLoading;
     }
 
     @SuppressLint("StaticFieldLeak")
-    private void loadRandomMovie() {
+    public void loadRandomMovie() {
+        mIsLoading.setValue(true);
         new AsyncTask<Void, Void, Movie>() {
             @Override
             protected Movie doInBackground(Void... voids) {
@@ -67,8 +58,29 @@ public class RemoteDataSource {
 
             @Override
             protected void onPostExecute(Movie movie) {
+                mIsLoading.setValue(false);
                 mMovieLiveData.setValue(movie);
             }
         }.execute();
     }
+
+//    public LiveData<Movie> getMovieById(int movieId) {
+//        loadMovieById(movieId);
+//        return mMovieLiveData;
+//    }
+//
+//    @SuppressLint("StaticFieldLeak")
+//    private void loadMovieById(final int movieId) {
+//        new AsyncTask<Void, Void, Movie>() {
+//            @Override
+//            protected Movie doInBackground(Void... voids) {
+//                return QueryUtils.fetchMovie(movieId);
+//            }
+//
+//            @Override
+//            protected void onPostExecute(Movie movie) {
+//                mMovieLiveData.setValue(movie);
+//            }
+//        }.execute();
+//    }
 }

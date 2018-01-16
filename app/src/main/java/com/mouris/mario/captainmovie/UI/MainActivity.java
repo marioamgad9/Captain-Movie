@@ -2,20 +2,23 @@ package com.mouris.mario.captainmovie.UI;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.mouris.mario.captainmovie.Data.Movie;
 import com.mouris.mario.captainmovie.R;
+import com.mouris.mario.captainmovie.Utils.NetworkUtils;
 import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String LOG_TAG = MainActivity.class.getSimpleName();
+//    private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
     private static final int ANIMATION_DURATION = 600;
     private static final int SHORT_ANIMATION_DURATION = 300;
@@ -32,9 +35,25 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         MainViewModel viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        //To update the mode we're in
         viewModel.getRandomMovie().observe(this, movie -> {
             if (movie != null) {
+                //Go to movie mode
                 bindDataToMovieLayout(movie);
+                goToMovieMode();
+            } else {
+                //Go to captain mode
+                goToCaptainMode();
+            }
+        });
+
+        //To update the loading state
+        ProgressBar progressBar = findViewById(R.id.progressBar);
+        viewModel.isLoading().observe(this, isLoading -> {
+            if (isLoading) {
+                progressBar.setVisibility(View.VISIBLE);
+            } else {
+                progressBar.setVisibility(View.GONE);
             }
         });
 
@@ -42,17 +61,23 @@ public class MainActivity extends AppCompatActivity {
         mCaptainImageView = findViewById(R.id.captain);
         mMovieLayout = findViewById(R.id.movieLayout);
         mSkyImageView = findViewById(R.id.sky);
-
         FloatingActionButton cancelFab = findViewById(R.id.cancelFAB);
-        cancelFab.setOnClickListener(v-> goToCaptainMode());
 
-        mAskCaptainButton.setOnClickListener(v-> goToMovieMode());
+        cancelFab.setOnClickListener(v-> viewModel.removeCurrentMovie());
+        mAskCaptainButton.setOnClickListener(v-> {
+            if (NetworkUtils.isNetworkConnected(this)) {
+                viewModel.loadRandomMovie();
+            } else {
+                Snackbar.make(mCaptainImageView,
+                        R.string.no_internet_message, Snackbar.LENGTH_LONG).show();
+            }
+        });
 
     }
 
     private void bindDataToMovieLayout(Movie movie) {
         TextView titleTV = findViewById(R.id.titleTextView);
-        TextView generesTV = findViewById(R.id.generesTextView);
+        TextView genresTV = findViewById(R.id.generesTextView);
         TextView overviewTV = findViewById(R.id.overviewTextView);
         TextView rateTV = findViewById(R.id.rateTextView);
         ImageView movieImageView = findViewById(R.id.posterImageView);
@@ -66,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
 
         String genresString = String.format(getResources().getString(R.string.movie_genres),
                 movie.genres);
-        generesTV.setText(genresString);
+        genresTV.setText(genresString);
 
         Picasso.with(this).load(movie.poster_path)
                 .placeholder(R.drawable.poster_placeholder)

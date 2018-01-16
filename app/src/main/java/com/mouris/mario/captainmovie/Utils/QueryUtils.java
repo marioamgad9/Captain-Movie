@@ -29,20 +29,20 @@ public class QueryUtils {
     private QueryUtils() {
     }
 
-    public static Movie fetchMovie(int movieId) {
-        String request_url = BASE_URL + movieId + API_KEY_QUERY;
-
-        URL url = createUrl(request_url);
-
-        String jsonResponse = null;
-        try {
-            jsonResponse = makeHttpRequest(url);
-        } catch (IOException e) {
-            Log.e(LOG_TAG, "Problem making the HTTP request.", e);
-        }
-
-        return extractMovieFromJson(jsonResponse);
-    }
+//    public static Movie fetchMovie(int movieId) {
+//        String request_url = BASE_URL + movieId + API_KEY_QUERY;
+//
+//        URL url = createUrl(request_url);
+//
+//        String jsonResponse = null;
+//        try {
+//            jsonResponse = makeHttpRequest(url);
+//        } catch (IOException e) {
+//            Log.e(LOG_TAG, "Problem making the HTTP request.", e);
+//        }
+//
+//        return extractMovieFromJson(jsonResponse);
+//    }
 
     public static Movie fetchRandomMovie() {
         int movieId = getRandomMovieId();
