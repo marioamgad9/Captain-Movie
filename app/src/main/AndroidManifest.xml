@@ -13,7 +13,7 @@
         android:hardwareAccelerated="true"
         android:largeHeap="true"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme.Launcher">
         <activity android:name=".UI.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
