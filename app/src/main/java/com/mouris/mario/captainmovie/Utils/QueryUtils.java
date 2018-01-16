@@ -135,10 +135,15 @@ public class QueryUtils {
             movie.original_language = movieJsonObject.getString("original_language");
 
             JSONArray genresJsonArray = movieJsonObject.getJSONArray("genres");
+            StringBuilder genresStringBuilder = new StringBuilder();
             for (int i=0 ; i < genresJsonArray.length(); i++) {
                 JSONObject genreJsonObject = genresJsonArray.getJSONObject(i);
-                movie.genres.add(genreJsonObject.getString("name"));
+                genresStringBuilder.append(genreJsonObject.getString("name"));
+                if (i != 0 && i != genresJsonArray.length()-1) {
+                    genresStringBuilder.append(", ");
+                }
             }
+            movie.genres = genresStringBuilder.toString();
 
         } catch (JSONException e) {
             Log.e(LOG_TAG, "There was an error in extractMovieFromJson", e);

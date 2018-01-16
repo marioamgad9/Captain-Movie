@@ -13,9 +13,8 @@ public class Movie {
     public String poster_path;
     public boolean adult;
     public String original_language;
-    public List<String > genres;
+    public String genres;
 
     public Movie() {
-        genres = new ArrayList<>();
     }
 }

@@ -62,6 +62,10 @@ public class MainActivity extends AppCompatActivity {
                 String.valueOf((int) movie.vote_average));
         rateTV.setText(rateString);
 
+        String genresString = String.format(getResources().getString(R.string.movie_genres),
+                movie.genres);
+        generesTV.setText(genresString);
+
         Picasso.with(this).load(movie.poster_path)
                 .placeholder(R.drawable.poster_placeholder)
                 .into(movieImageView);
