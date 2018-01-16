@@ -1,6 +1,7 @@
 package com.mouris.mario.captainmovie.UI;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -27,8 +28,8 @@ public class MainActivity extends AppCompatActivity {
     private static final int SHORT_ANIMATION_DURATION = 300;
 
     private Button mAskCaptainButton;
-    private ImageView mCaptainImageView;
     private ImageView mSkyImageView;
+    private ConstraintLayout mCaptainLayout;
     private LinearLayout mMovieLayout;
 
 
@@ -63,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         mAskCaptainButton = findViewById(R.id.askCaptainButton);
-        mCaptainImageView = findViewById(R.id.captain);
+        mCaptainLayout = findViewById(R.id.captainLayout);
         mMovieLayout = findViewById(R.id.movieLayout);
         mSkyImageView = findViewById(R.id.sky);
         FloatingActionButton cancelFab = findViewById(R.id.cancelFAB);
@@ -73,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
             if (NetworkUtils.isNetworkConnected(this)) {
                 viewModel.loadRandomMovie();
             } else {
-                Snackbar.make(mCaptainImageView,
+                Snackbar.make(mSkyImageView,
                         R.string.no_internet_message, Snackbar.LENGTH_LONG).show();
             }
         });
@@ -117,32 +118,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void goToCaptainMode() {
-        //Show the captain
-        mCaptainImageView.animate().translationY(0).setDuration(ANIMATION_DURATION);
-        mCaptainImageView.animate().alpha(1).setDuration(ANIMATION_DURATION);
-        mAskCaptainButton.animate().translationY(0).setDuration(ANIMATION_DURATION);
-        //Show the askCaptainButton
-        mAskCaptainButton.animate().translationY(0).setDuration(ANIMATION_DURATION);
+        //Show the captain layout
+        mCaptainLayout.animate().translationY(0).setDuration(ANIMATION_DURATION);
         //Hide the movie layout
         mMovieLayout.animate().translationY(-1550).setDuration(ANIMATION_DURATION)
                 .withEndAction(() -> mMovieLayout.setVisibility(View.GONE));
         //Zoom out of the sky
-        mSkyImageView.animate().scaleXBy(-0.8f).setDuration(ANIMATION_DURATION);
-        mSkyImageView.animate().scaleYBy(-0.8f).setDuration(ANIMATION_DURATION);
+        mSkyImageView.animate().scaleXBy(-0.8f)
+                .scaleYBy(-0.8f).setDuration(ANIMATION_DURATION);
     }
 
     private void goToMovieMode() {
-        //Hide the captain
-        mCaptainImageView.animate().translationY(1250).setDuration(ANIMATION_DURATION);
-        mCaptainImageView.animate().alpha(0).setDuration(ANIMATION_DURATION);
-        //Hide the askCaptainButton
-        mAskCaptainButton.animate().translationY(200).setDuration(SHORT_ANIMATION_DURATION);
+        //Hide the captain layout
+        mCaptainLayout.animate().translationY(1250).setDuration(ANIMATION_DURATION);
         //Show the movie layout
         mMovieLayout.setTranslationY(-1550);
         mMovieLayout.setVisibility(View.VISIBLE);
         mMovieLayout.animate().translationY(0).setDuration(ANIMATION_DURATION);
         //Zoom into the sky
-        mSkyImageView.animate().scaleXBy(0.8f).setDuration(ANIMATION_DURATION);
-        mSkyImageView.animate().scaleYBy(0.8f).setDuration(ANIMATION_DURATION);
+        mSkyImageView.animate().scaleXBy(0.8f)
+                .scaleYBy(0.8f).setDuration(ANIMATION_DURATION);
     }
 }
