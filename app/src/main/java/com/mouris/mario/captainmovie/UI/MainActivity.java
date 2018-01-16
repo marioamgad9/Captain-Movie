@@ -8,9 +8,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -64,11 +61,15 @@ public class MainActivity extends AppCompatActivity {
         mMovieLayout = findViewById(R.id.movieLayout);
         mSkyImageView = findViewById(R.id.sky);
         FloatingActionButton cancelFab = findViewById(R.id.cancelFAB);
-        Button mAskCaptainButton = findViewById(R.id.askCaptainButton);
+        Button askCaptainButton = findViewById(R.id.askCaptainButton);
 
-        cancelFab.setOnClickListener(v-> viewModel.removeCurrentMovie());
-        mAskCaptainButton.setOnClickListener(v-> {
+        cancelFab.setOnClickListener(v-> {
+            viewModel.removeCurrentMovie();
+            askCaptainButton.setEnabled(true);
+        });
+        askCaptainButton.setOnClickListener(v-> {
             if (NetworkUtils.isNetworkConnected(this)) {
+                askCaptainButton.setEnabled(false);
                 viewModel.loadRandomMovie();
             } else {
                 Snackbar.make(mSkyImageView,
